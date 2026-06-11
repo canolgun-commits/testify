@@ -1,3 +1,6 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +19,7 @@ package testify_test
 
 import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -25,7 +29,9 @@ func FuzzAssertEqual(f *testing.F) {
 	f.Add("", "")
 	f.Add("hello", "world")
 	f.Fuzz(func(t *testing.T, expected, actual string) {
-		if len(expected) > 10000 || len(actual) > 10000 { return }
+		if len(expected) > 10000 || len(actual) > 10000 {
+			return
+		}
 		func() {
 			defer func() { recover() }()
 			mockT := new(testing.T)
@@ -43,7 +49,9 @@ func FuzzAssertJSON(f *testing.F) {
 	f.Add(`null`, `null`)
 	f.Add(`"hello"`, `"hello"`)
 	f.Fuzz(func(t *testing.T, expectedJSON, actualJSON string) {
-		if len(expectedJSON) > 1<<16 || len(actualJSON) > 1<<16 { return }
+		if len(expectedJSON) > 1<<16 || len(actualJSON) > 1<<16 {
+			return
+		}
 		func() {
 			defer func() { recover() }()
 			mockT := new(testing.T)
@@ -57,7 +65,9 @@ func FuzzAssertYAML(f *testing.F) {
 	f.Add("list:\n  - a\n  - b", "list:\n  - a\n  - b")
 	f.Add("", "")
 	f.Fuzz(func(t *testing.T, expectedYAML, actualYAML string) {
-		if len(expectedYAML) > 1<<16 || len(actualYAML) > 1<<16 { return }
+		if len(expectedYAML) > 1<<16 || len(actualYAML) > 1<<16 {
+			return
+		}
 		func() {
 			defer func() { recover() }()
 			mockT := new(testing.T)
@@ -84,7 +94,9 @@ func FuzzElementsMatch(f *testing.F) {
 	f.Add("a", "b", "c")
 	f.Add("", "", "")
 	f.Fuzz(func(t *testing.T, a, b, c string) {
-		if len(a) > 1000 || len(b) > 1000 || len(c) > 1000 { return }
+		if len(a) > 1000 || len(b) > 1000 || len(c) > 1000 {
+			return
+		}
 		func() {
 			defer func() { recover() }()
 			mockT := new(testing.T)
